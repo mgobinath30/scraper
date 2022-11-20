@@ -60,8 +60,7 @@ app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
 
 //inject scraped data to html
 function injectHTML(data){
-    // res.sendFile(__dirname +'/scraper.html');
-    let templateFile = fs.readFileSync(__dirname+`templates/wordpress.html`,'utf8'); //read the template from here
+    let templateFile = fs.readFileSync(`${__dirname}/templates/wordpress.html`,'utf8'); //read the template from here
     // let templateFile = fs.readFileSync(`templates/template_${data.league}.html`,'utf8'); //read the template from here
     let templateMin = eval(templateFile);
     let template = beautify.html(templateMin,{
