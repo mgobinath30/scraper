@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraper</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script src="http://beta.scraper.ogntechsite.com/scraper/out/app.js"></script> -->
+</head>
+<body>
+    <div class="col-12 col-md-3 col-xl-2 bd-sidebar"></div>
+    <!-- <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content align-items-center"> -->
+      <main class="col-12 bd-content align-items-center">
+        <div class="card text-center">
+            <div class="card-header">
+              Scrape a Game Article
+            </div>
+            <div class="card-body">
+                <form action="" method="POST" autocomplete="off">
+                    <div class="form-group row">
+                      <label for="url1" class="col-3 col-form-label">SportsDirect URL</label> 
+                      <div class="col-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fa fa-link"></i>
+                            </div>
+                          </div> 
+                          <input id="url1" name="url1" value="https://content.sportsdirectinc.com/hockey/nhl-preview.aspx?page=/data/NHL/matchups/g2_preview_13.html" type="text" required="required" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="url2" class="col-3 col-form-label">Bovada URL</label> 
+                      <div class="col-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fa fa-link"></i>
+                            </div>
+                          </div> 
+                          <input id="url2" name="url2" value="http://stats.bovada.chalkpartners.com/stats/matchup/hockey/nhl/1164461" type="text" required="required" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="url3" class="col-3 col-form-label">Team 1 URL</label> 
+                      <div class="col-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fa fa-link"></i>
+                            </div>
+                          </div> 
+                          <input id="url3" name="url3" value="http://content.sportsdirectinc.com/basketball/nba-teams.aspx?page=/data/nba/teams/stats/2022-2023/stats404119.html" type="text" required="required" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="url4" class="col-3 col-form-label">Team 2 URL</label> 
+                      <div class="col-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fa fa-link"></i>
+                            </div>
+                          </div> 
+                          <input id="url4" name="url4" value="https://content.sportsdirectinc.com/basketball/nba-teams.aspx?page=/data/nba/teams/stats/2022-2023/stats404029.html" type="text" required="required" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="url5" class="col-3 col-form-label">Team 2 URL</label> 
+                      <div class="col-9">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fa fa-link"></i>
+                            </div>
+                          </div> 
+                          <input id="url5" name="url5" value="http://stats.bovada.chalkpartners.com/stats/preview/basketball/nba/1740301" type="text" required="required" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                      <label for="author" class="col-3 col-form-label">Author</label> 
+                      <div class="col-9">
+                        <select id="author" name="author" required="required" class="custom-select">
+                          <option value="1">LVSB Team</option>
+                          <option value="2">Liev Jackson</option>
+                          <option value="3">Aengus Moorehead</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="order" class="col-3 col-form-label">Order</label> 
+                      <div class="col-9">
+                        <input id="order" name="order" value="7" type="text" required="required" class="form-control">
+                      </div>
+                    </div> 
+                    <div class="form-group row">
+                      <div class="offset-3 col-9">
+                        <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                        <a href="http://beta.scraper.ogntechsite.com/scraper/out"><button name="View Templates" type="button" class="btn btn-primary">View Templates</button></a>
+                      </div>
+                    </div>
+                  </form>
+            </div>
+        </div>
+    </main>
+    <div class="d-none d-xl-block col-xl-2 bd-toc"></div>
+</body>
+</html>

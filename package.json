@@ -1,0 +1,30 @@
+{
+  "name": "gen-articles",
+  "version": "1.0.0",
+  "description": "Middle-ware apps to enable the generation of ready templates to be pasted into the WebLoft.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/ogn/gen-articles.git"
+  },
+  "author": "Sam Roy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/ogn/gen-articles/issues"
+  },
+  "homepage": "https://gitlab.com/ogn/gen-articles#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "faker": "^6.6.6",
+    "firebase-admin": "^11.2.1",
+    "firestore": "^1.1.6",
+    "js-beautify": "^1.10.3",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0"
+  }
+}
