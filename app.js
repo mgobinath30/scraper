@@ -45,7 +45,7 @@ app.post('/', async (req,res) => {
 
   let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,author,league,partnerID,data.order,team1Object,team2Object,excerptObj);
   let writeTemplate =injectHTML(scrapedObject);
-  res.send(`<a href="http://beta.scraper.ogntechsite.com/scraper/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
+  res.send(`<a href="/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
 })
 
 app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
