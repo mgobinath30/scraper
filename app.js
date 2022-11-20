@@ -45,7 +45,7 @@ app.post('/', async (req,res) => {
 
   let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,author,league,partnerID,data.order,team1Object,team2Object,excerptObj);
   let writeTemplate =injectHTML(scrapedObject);
-  res.send(`<a href="/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
+  res.send(`<a href=${__dirname}/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
 })
 
 app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
@@ -60,7 +60,8 @@ app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
 
 //inject scraped data to html
 function injectHTML(data){
-    let templateFile = fs.readFileSync(`templates/wordpress.html`,'utf8'); //read the template from here
+    // res.sendFile(__dirname +'/scraper.html');
+    let templateFile = fs.readFileSync(__dirname+`templates/wordpress.html`,'utf8'); //read the template from here
     // let templateFile = fs.readFileSync(`templates/template_${data.league}.html`,'utf8'); //read the template from here
     let templateMin = eval(templateFile);
     let template = beautify.html(templateMin,{
