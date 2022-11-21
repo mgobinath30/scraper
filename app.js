@@ -71,7 +71,7 @@ function injectHTML(data){
         "preserve_newlines": true
       });
     let fileName = `(${data.order}) ${data.author} [${data.league}] ${data.visitingTeam} at ${data.homeTeam}.html`
-    fs.writeFileSync(`out/${fileName}`, template);
+    fs.writeFileSync(`${__dirname}/templates/${fileName}`, template);
     savetoDB(template, data);//invoke savetodb Firebase Function
     return fileName;
 }
