@@ -44,9 +44,10 @@ app.post('/', async (req,res) => {
   let excerptObj = handleSource5(sitesHTML[4]);
 
   let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,author,league,partnerID,data.order,team1Object,team2Object,excerptObj);
-  let writeTemplate =injectHTML(scrapedObject);
+  let writeTemplate = injectHTML(scrapedObject);
+  res.send(writeTemplate);
   // res.send(`<a href="http://beta.scraper.ogntechsite.com/scraper/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
-  res.send(`<a href=${__dirname}/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
+  // res.send(`<a href=${__dirname}/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
 })
 
 app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
@@ -70,10 +71,12 @@ function injectHTML(data){
         "max_preserve_newlines": "5",
         "preserve_newlines": true
       });
-    let fileName = `(${data.order}) ${data.author} [${data.league}] ${data.visitingTeam} at ${data.homeTeam}.html`
-    fs.writeFileSync(`${__dirname}/templates/${fileName}`, template);
-    savetoDB(template, data);//invoke savetodb Firebase Function
-    return fileName;
+    return template;
+    // res.send(template);
+    // let fileName = `(${data.order}) ${data.author} [${data.league}] ${data.visitingTeam} at ${data.homeTeam}.html`
+    // fs.writeFileSync(`out/${fileName}`, template);
+    // savetoDB(template, data);//invoke savetodb Firebase Function
+    // return fileName;
 }
 
 //Fetch URL Response and Pass it handler function
