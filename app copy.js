@@ -38,11 +38,13 @@ app.post('/', async (req,res) => {
   let sitesHTML = await fetchURL(data.url1,data.url2);
   let sportsOptionsObject = handleSource1(sitesHTML[0]);
   let bovadaObject = handleSource2(sitesHTML[1]);
-
+console.log(sportsOptionsObject);
+console.log(bovadaObject);
   let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,author,league,partnerID,data.order);
-  let writeTemplate =injectHTML(scrapedObject);
+  let writeTemplate = injectHTML(scrapedObject);
   res.send(writeTemplate);
   // res.send(`<a href="http://beta.scraper.ogntechsite.com/scraper/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
+  // res.send(`<a href=${__dirname}/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
 })
 
 app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
@@ -57,7 +59,7 @@ app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
 
 //inject scraped data to html
 function injectHTML(data){
-    let templateFile = fs.readFileSync(`templates/wordpress.html`,'utf8'); //read the template from here
+    let templateFile = fs.readFileSync(`${__dirname}/templates/new.html`,'utf8'); //read the template from here
     // let templateFile = fs.readFileSync(`templates/template_${data.league}.html`,'utf8'); //read the template from here
     let templateMin = eval(templateFile);
     let template = beautify.html(templateMin,{
@@ -66,11 +68,12 @@ function injectHTML(data){
         "max_preserve_newlines": "5",
         "preserve_newlines": true
       });
+    return template;
+    // res.send(template);
     // let fileName = `(${data.order}) ${data.author} [${data.league}] ${data.visitingTeam} at ${data.homeTeam}.html`
     // fs.writeFileSync(`out/${fileName}`, template);
     // savetoDB(template, data);//invoke savetodb Firebase Function
     // return fileName;
-    return template;
 }
 
 //Fetch URL Response and Pass it handler function
@@ -161,6 +164,7 @@ function handleSource1(html) {
             }
         });
         first3Para = first3Para.join(',').toString();
+        //
         let splitLocation = location.split(',');
         let TODAY_HERE = whenArr[1];
         let STADIUM_HERE = splitLocation[0];
