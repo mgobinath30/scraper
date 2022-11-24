@@ -106,7 +106,7 @@ function handleObjects(object1,object2,league,partnerID,order,sports){
     let a = new Date();
     let a1 = a.toLocaleDateString();
     let b1 = a1.split(['/']);
-    let c1 = b1[2]+'-'+b1[1]+'-'+b1[0];
+    let c1 = b1[2]+'-'+b1[0]+'-'+b1[1];
     let mainSports = sports.split(' ')[0];
     obj = {
         today: c1,
