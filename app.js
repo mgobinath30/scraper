@@ -32,14 +32,15 @@ app.get('/', (req,res) => {
   });
 app.post('/', async (req,res) => {
   const data = req.body;
-  let author = authorName(data.author);
+  let author = authorName(1);
+  // let sports = sportsName(data.sports);
+  let sportsData = sportsName(data.sports);
   let league = leagueName(data.url1);
   let partnerID = partnerid(author);
   let sitesHTML = await fetchURL(data.url1,data.url2);
   let sportsOptionsObject = handleSource1(sitesHTML[0]);
   let bovadaObject = handleSource2(sitesHTML[1]);
-
-  let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,author,league,partnerID,data.order);
+  let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,league,partnerID,data.order,sportsData);
   let writeTemplate =injectHTML(scrapedObject);
   res.send(writeTemplate);
   // res.send(`<a href="http://beta.scraper.ogntechsite.com/scraper/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
@@ -101,18 +102,24 @@ async function fetchURL(url1, url2) {
 }
 
 //build object of scraped data
-function handleObjects(object1,object2,author,league,partnerID,order){
+function handleObjects(object1,object2,league,partnerID,order,sports){
+    let a = new Date();
+    let a1 = a.toLocaleDateString();
+    let b1 = a1.split(['/']);
+    let c1 = b1[2]+'-'+b1[1]+'-'+b1[0];
+    let mainSports = sports.split(' ')[0];
     obj = {
+        today: c1,
+        sportsData:sports,
+        mainSports:mainSports,
         TODAY_HERE : object1.TODAY_HERE,
         STADIUM_HERE : object1.STADIUM_HERE,
         STATE : object1.STATE,
         CITY : object1.CITY,
         CITY_NAME_01: object1.CITY_NAME_01,
         CITY_NAME_02: object1.CITY_NAME_02,
-        author: author,
         league: league,
         partnerID: partnerID,
-        order: order,
         // time: object1.time,
         date: object1.date,
         where: object1.location,
@@ -310,6 +317,20 @@ function authorName(id){
     }
     return author;
 }
+
+function sportsName(id){
+    let dsports = '';
+    switch(id){
+        case '1': dsports = 'NBA Basketball';break;
+        case '2': dsports = 'NCAA Basketball';break;
+        case '3': dsports = 'NFL Football';break;
+        case '4': dsports = 'NCAA Football';break;
+        case '5': dsports = 'NHL Hockey';break;
+        default: dsports = '';
+    }
+    return dsports;
+}
+
 function leagueName(url){
     const nba = url.toLowerCase().includes('nba');
     const ncaab = url.toLowerCase().includes('ncaab');
