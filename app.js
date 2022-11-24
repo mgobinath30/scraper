@@ -107,6 +107,8 @@ function handleObjects(object1,object2,author,league,partnerID,order){
         STADIUM_HERE : object1.STADIUM_HERE,
         STATE : object1.STATE,
         CITY : object1.CITY,
+        CITY_NAME_01: object1.CITY_NAME_01,
+        CITY_NAME_02: object1.CITY_NAME_02,
         author: author,
         league: league,
         partnerID: partnerID,
@@ -162,6 +164,9 @@ function handleSource1(html) {
         });
         first3Para = first3Para.join(',').toString();
         let splitLocation = location.split(',');
+        let cityname = $('.sdi-title-page-who').text().trim().split(' ');
+        let CITY_NAME_01 = cityname[0];
+        let CITY_NAME_02 = cityname[2];
         let TODAY_HERE = whenArr[1];
         let STADIUM_HERE = splitLocation[0];
         let STATE  = splitLocation[1];
@@ -177,7 +182,9 @@ function handleSource1(html) {
             TODAY_HERE : TODAY_HERE,
             STADIUM_HERE : STADIUM_HERE,
             STATE : STATE,
-            CITY : CITY
+            CITY : CITY,
+            CITY_NAME_01: CITY_NAME_01,
+            CITY_NAME_02: CITY_NAME_02
         }
         return scrapedObject1;
     } catch (error) {
@@ -221,7 +228,6 @@ function handleSource2(html) {
         let trendsVisitingTable = trendsVisitingTableToFix.replace(/<th>.*(?<=<\/th>)/g,`<th colspan="3"> <strong>${VisitingTeamName}</strong></th>`); //add strong tag in team name
         let trendsHomeTable = trendsHomeTableToFix.replace(/<th>.*(?<=<\/th>)/g,`<th colspan="3"> <strong>${HomeTeamName}</strong></th>`);//add strong tag in team name
         // end scraped data
-
         // build and send back object to handleObjects function
         let scrapedObject2 = {
             visitingTeam: VisitingTeamName,
