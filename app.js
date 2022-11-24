@@ -120,7 +120,7 @@ function handleObjects(object1,object2,league,partnerID,order,sports){
         CITY_NAME_02: object1.CITY_NAME_02,
         league: league,
         partnerID: partnerID,
-        // time: object1.time,
+        time: object1.time,
         date: object1.date,
         where: object1.location,
         when: object1.when,
@@ -138,6 +138,7 @@ function handleObjects(object1,object2,league,partnerID,order,sports){
         homeTeamWinLose: object2.homeWinLose,
         visitingTeamWinLose: object2.visitingWinLose      
     }
+    // console.log(obj);
     return obj;
 }
 
