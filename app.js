@@ -137,7 +137,8 @@ function handleObjects(object1,object2,league,partnerID,order,sports){
         trendsHome: object2.trendsHome,
         vs: object2.vs,
         homeTeamWinLose: object2.homeWinLose,
-        visitingTeamWinLose: object2.visitingWinLose      
+        visitingTeamWinLose: object2.visitingWinLose,
+        citynameFull:object1.citynameFull    
     }
     // console.log(obj);
     return obj;
@@ -180,6 +181,7 @@ function handleSource1(html) {
         let STADIUM_HERE = splitLocation[0];
         let STATE  = splitLocation[1];
         let CITY = splitLocation[2];
+        let citynameFull = $('.sdi-title-page-who').text();
         // build and send back object to handleObjects function
         let scrapedObject1 = {
             time: time,
@@ -193,7 +195,8 @@ function handleSource1(html) {
             STATE : STATE,
             CITY : CITY,
             CITY_NAME_01: CITY_NAME_01,
-            CITY_NAME_02: CITY_NAME_02
+            CITY_NAME_02: CITY_NAME_02,
+            citynameFull: citynameFull
         }
         return scrapedObject1;
     } catch (error) {
