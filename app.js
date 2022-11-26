@@ -42,8 +42,8 @@ app.post('/', async (req,res) => {
   let bovadaObject = handleSource2(sitesHTML[1]);
   let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,league,partnerID,data.order,sportsData);
   let writeTemplate =injectHTML(scrapedObject);
-  res.send(writeTemplate);
-  // res.send(`<a href="http://beta.scraper.ogntechsite.com/scraper/out/${writeTemplate}">Download Template</a><br><a href="/">Go Back</a>`)
+  //res.send(writeTemplate);
+  res.send(`<a href="/download">Download Template</a><br><a href="/">Go Back</a>`)
 })
 
 app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
@@ -56,9 +56,15 @@ app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
 
 */
 
+app.get('/download', function(req, res){
+    const file = `${__dirname}/out/content.html`;
+    res.download(file); // Set disposition and send it.
+  });
+
 //inject scraped data to html
 function injectHTML(data){
-    let templateFile = fs.readFileSync(`${__dirname}/templates/wordpress.html`,'utf8'); //read the template from here
+
+    let templateFile = fs.readFileSync(`${__dirname}/templates/${data.mainSports}.html`,'utf8'); //read the template from here
     // let templateFile = fs.readFileSync(`templates/template_${data.league}.html`,'utf8'); //read the template from here
     let templateMin = eval(templateFile);
     let template = beautify.html(templateMin,{
@@ -68,9 +74,10 @@ function injectHTML(data){
         "preserve_newlines": true
       });
     // let fileName = `(${data.order}) ${data.author} [${data.league}] ${data.visitingTeam} at ${data.homeTeam}.html`
-    // fs.writeFileSync(`out/${fileName}`, template);
+    fs.writeFileSync(`${__dirname}/out/content.html`, template);
     // savetoDB(template, data);//invoke savetodb Firebase Function
     // return fileName;
+    // res.download('out/aa.html');
     return template;
 }
 
@@ -109,6 +116,9 @@ function handleObjects(object1,object2,league,partnerID,order,sports){
     let b1 = a1.split(['/']);
     let c1 = b1[2]+'-'+b1[0]+'-'+b1[1];
     let mainSports = sports.split(' ')[0];
+    if(mainSports === 'NCAA') {
+        mainSports = sports.split(' ')[1] === 'Basketball' ? 'NCAAB' : 'NCAAF';
+    }
     obj = {
         today: c1,
         sportsData:sports,
