@@ -42,8 +42,8 @@ app.post('/', async (req,res) => {
   let bovadaObject = handleSource2(sitesHTML[1]);
   let scrapedObject = handleObjects(sportsOptionsObject,bovadaObject,league,partnerID,data.order,sportsData);
   let writeTemplate =injectHTML(scrapedObject);
-  //res.send(writeTemplate);
-  res.send(`<a href="/download">Download Template</a><br><a href="/">Go Back</a>`)
+  res.send(writeTemplate);
+  // res.send(`<a href="/download">Download Template</a><br><a href="/">Go Back</a>`)
 })
 
 app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
@@ -75,7 +75,7 @@ function injectHTML(data){
       });
     // let fileName = `(${data.order}) ${data.author} [${data.league}] ${data.visitingTeam} at ${data.homeTeam}.html`
     // fs.writeFileSync(`${__dirname}/out/content.html`, template);
-    fs.writeFile(`${__dirname}/out/content.html`, 'template', (err) => { if (err) throw err; });
+    // fs.writeFile(`${__dirname}/out/content.html`, 'template', (err) => { if (err) throw err; });
     // savetoDB(template, data);//invoke savetodb Firebase Function
     // return fileName;
     // res.download('out/aa.html');
