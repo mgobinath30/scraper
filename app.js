@@ -112,7 +112,7 @@ async function fetchURL(url1, url2) {
 //build object of scraped data
 function handleObjects(object1,object2,league,partnerID,order,sports){
     let aa = object1.when;
-    let a = new Date(aa[2]);
+    let a = new Date(aa[2]+','+aa[3]);
     let a1 = a.toLocaleDateString();
     let b1 = a1.split(['/']);
     let c1 = b1[2]+'-'+b1[0]+'-'+b1[1];
