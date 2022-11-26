@@ -57,7 +57,7 @@ app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
 */
 
 app.get('/download', function(req, res){
-    const file = `${__dirname}/out/content.html`;
+    const file = `${__dirname}//out//content.html`;
     res.download(file); // Set disposition and send it.
   });
 
