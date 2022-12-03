@@ -80,7 +80,7 @@ app.get('/download', function(req, res){
 //inject scraped data to html
 function injectHTML(data){
 
-    let templateFile = fs.readFileSync(`${__dirname}/templates/article.html`,'utf8'); //read the template from here
+    let templateFile = fs.readFileSync(`${__dirname}/templates/${data.mainSports}.html`,'utf8'); //read the template from here
     // let templateFile = fs.readFileSync(`templates/template_${data.league}.html`,'utf8'); //read the template from here
     let templateMin = eval(templateFile);
     let template = beautify.html(templateMin,{
