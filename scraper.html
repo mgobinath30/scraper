@@ -71,6 +71,66 @@
             </div>
         </div>
     </main>
+    <br/><br/>
     <div class="d-none d-xl-block col-xl-2 bd-toc"></div>
+    <main class="col-12 bd-content align-items-center">
+      <div class="card text-center">
+          <div class="card-header">
+             Article Scrape
+          </div>
+          <div class="card-body">
+              <form action="/article" method="POST" autocomplete="off">
+                  <div class="form-group row">
+                    <label for="url11" class="col-3 col-form-label">Matchup URL</label> 
+                    <div class="col-9">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="fa fa-link"></i>
+                          </div>
+                        </div> 
+                        <input id="url11" name="url11" value="http://content.sportsdirectinc.com/basketball/nba-preview.aspx?page=/data/NBA/matchups/g5_preview_1.html"
+                         type="text" required="required" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="url22" class="col-3 col-form-label">Preview URL</label> 
+                    <div class="col-9">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="fa fa-link"></i>
+                          </div>
+                        </div> 
+                        <input id="url22" name="url22"  value="http://content.sportsdirectinc.com/basketball/nba-matchups.aspx?page=/data/NBA/matchups/g5_summary_1.html"
+                         type="text" required="required" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="url33" class="col-3 col-form-label">Bovada Stats Matchups</label> 
+                    <div class="col-9">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <div class="input-group-text">
+                            <i class="fa fa-link"></i>
+                          </div>
+                        </div> 
+                        <input id="url33" name="url33"  value="http://stats.bovada.chalkpartners.com/stats/matchup/basketball/nba/1740461" type="text" required="required" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="offset-3 col-9">
+                      <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                      <!-- <a href="http://beta.scraper.ogntechsite.com/scraper/out"><button name="View Templates" type="button" class="btn btn-primary">View Templates</button></a> -->
+                    </div>
+                  </div>
+                </form>
+          </div>
+      </div>
+  </main>
 </body>
 </html>

@@ -46,6 +46,22 @@ app.post('/', async (req,res) => {
   // res.send(`<a href="/download">Download Template</a><br><a href="/">Go Back</a>`)
 })
 
+app.post('/article', async (req,res) => {
+    const data = req.body;
+    let author = authorName(1);
+    // let sports = sportsName(data.sports);
+    let sportsData = sportsName(data.sports);
+    let league = leagueName(data.url11);
+    let partnerID = partnerid(author);
+    let sitesHTML = await fetchURLArticle(data.url11,data.url33,data.url22);
+    let sportsOptionsObject1 = handleSource1(sitesHTML[0]);
+    let bovadaObject1 = handleSource2(sitesHTML[1]);
+    let bovadaObject11 = handleSource3(sitesHTML[2]);
+    let scrapedObject = handleObjectsArticle(sportsOptionsObject1,bovadaObject1,league,partnerID,data.order,sportsData,bovadaObject11);
+    let writeTemplate =injectHTML(scrapedObject);
+    res.send(writeTemplate);
+  })
+
 app.listen(port, () => console.log(`Scraper Service listening on port ${port}`))
 
 
@@ -64,7 +80,7 @@ app.get('/download', function(req, res){
 //inject scraped data to html
 function injectHTML(data){
 
-    let templateFile = fs.readFileSync(`${__dirname}/templates/${data.mainSports}.html`,'utf8'); //read the template from here
+    let templateFile = fs.readFileSync(`${__dirname}/templates/article.html`,'utf8'); //read the template from here
     // let templateFile = fs.readFileSync(`templates/template_${data.league}.html`,'utf8'); //read the template from here
     let templateMin = eval(templateFile);
     let template = beautify.html(templateMin,{
@@ -106,6 +122,44 @@ async function fetchURL(url1, url2) {
     .catch(err => errHandler(err, `Fetch::GeneralError-SportsDirect`));
 
     sitedata = await Promise.all([fetch1, fetch2]).catch(err => errHandler(err, `Fetch::Promise_ALL_Rejection`));
+    return sitedata;
+}
+
+
+//Fetch URL Response and Pass it handler function
+async function fetchURLArticle(url1, url2, url3) {
+    const fetch1 = fetch(url1).then(res => {
+        if (res.status === 200) {
+            return res.text();
+        } else {
+            let err_string = `Fetching Error in Matchup URL. Server Replied with HTTP response code ${res.status}`;
+            let source = `Fetch::BadHTTPStatus-Matchup`
+            errHandler(err_string, source);
+        }
+    })
+    .catch(err => errHandler(err, `Fetch::GeneralError-Matchup`));
+    const fetch2 = fetch(url2).then(res => {
+        if (res.status === 200) {
+            return res.text();
+        } else {
+            let err_string = `Fetching Error in Preview URL. Server Replied with HTTP response code ${res.status}`;
+            let source = `Fetch::BadHTTPStatus-Preview`
+            errHandler(err_string, source);
+        }
+    })
+    .catch(err => errHandler(err, `Fetch::GeneralError-Preview`));
+    const fetch3 = fetch(url3).then(res => {
+        if (res.status === 200) {
+            return res.text();
+        } else {
+            let err_string = `Fetching Error in Stats Matchups URL. Server Replied with HTTP response code ${res.status}`;
+            let source = `Fetch::BadHTTPStatus-Stats Matchups`
+            errHandler(err_string, source);
+        }
+    })
+    .catch(err => errHandler(err, `Fetch::GeneralError-Stats Matchups`));
+
+    sitedata = await Promise.all([fetch1, fetch2, fetch3]).catch(err => errHandler(err, `Fetch::Promise_ALL_Rejection`));
     return sitedata;
 }
 
@@ -151,7 +205,58 @@ function handleObjects(object1,object2,league,partnerID,order,sports){
         visitingTeamWinLose: object2.visitingWinLose,
         citynameFull:object1.citynameFull    
     }
-    // console.log(obj);
+    console.log(obj);
+    return obj;
+}
+
+
+//build object of scraped data
+function handleObjectsArticle(object1,object2,league,partnerID,order,sports,article){
+    let aa = object1.when;
+    let a = new Date(aa[2]+','+aa[3]);
+    let a1 = a.toLocaleDateString();
+    let b1 = a1.split(['/']);
+    let c1 = b1[2]+'-'+b1[0]+'-'+b1[1];
+    let mainSports = sports.split(' ')[0];
+    if(mainSports === 'NCAA') {
+        mainSports = sports.split(' ')[1] === 'Basketball' ? 'NCAAB' : 'NCAAF';
+    }
+    obj = {
+        today: c1,
+        sportsData:sports,
+        mainSports:mainSports,
+        TODAY_HERE : object1.TODAY_HERE,
+        STADIUM_HERE : object1.STADIUM_HERE,
+        STATE : object1.STATE,
+        CITY : object1.CITY,
+        CITY_NAME_01: object1.CITY_NAME_01,
+        CITY_NAME_02: object1.CITY_NAME_02,
+        league: league,
+        partnerID: partnerID,
+        time: object1.time,
+        date: object1.date,
+        where: object1.location,
+        when: object1.when,
+        first3Para: object1.first3Para,
+        TV: object1.TVchannels,
+        firstParaGraph: object1.firstParaGraph,
+        recentForm: object2.recentFormTable,
+        visitingTeam: object2.visitingTeam,
+        homeTeam: object2.homeTeam,
+        last5VisitingTable: object2.last5VisitingTable,
+        last5HomeTable: object2.last5HomeTable,
+        trendsVisiting: object2.trendsVisiting,
+        trendsHome: object2.trendsHome,
+        vs: object2.vs,
+        homeTeamWinLose: object2.homeWinLose,
+        visitingTeamWinLose: object2.visitingWinLose,
+        citynameFull:object1.citynameFull,
+        injuries1:article.injuries1,
+        injuries2:article.injuries2,
+        injuries1Table:article.injuries1Table,
+        injuries2Table:article.injuries2Table    
+    }
+    console.log(obj);
     return obj;
 }
 
@@ -272,6 +377,39 @@ function handleSource2(html) {
     }
 }
 
+//Scrape Source 3
+function handleSource3(html) {
+    const $ = cheerio.load(html, {normalizeWhitespace: true, decodeEntities: false});
+    //initialized cheerio
+    try{
+        // $('.injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(2)')[0].remove();
+        // $('.injuries-showhide .sdi-data-wide:nth-child(4) tr:nth-child(2) td:nth-child(2)')[0].remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr:nth-child(2) td:nth-child(2)').remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(2)').remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr th:nth-child(2)').remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr:nth-child(2) td:nth-child(2)').remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr:nth-child(2) td:nth-child(3)').remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr th:nth-child(3)').remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr:nth-child(2) td:nth-child(3)').remove();
+        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(3)').remove();
+        let injuries1 = $(".injuries-showhide .sdi-titlerow:nth-child(3)").text();
+        let injuries2 = $(".injuries-showhide .sdi-titlerow:nth-child(6)").text();
+        let injuries1Table = $(".injuries-showhide .sdi-data-wide:nth-child(4)").html();
+        let injuries2Table = $(".injuries-showhide .sdi-data-wide:nth-child(7)").html();
+        let scrapedObject2 = {
+            injuries1:injuries1,
+            injuries2:injuries2,
+            injuries1Table:injuries1Table,
+            injuries2Table:injuries2Table
+        };
+        return scrapedObject2;
+    } catch(error){
+        let err_string = `Exact Error: ${error}`;
+        let source = 'Scraping::ContentErr-Bovada> URL Doesn\'t Contain required data or there was a change in the website'
+        errHandler(err_string, source);
+    }
+}
+
 //firebase stuff
 // function startFirebase() {
 //     admin.initializeApp({
@@ -320,8 +458,6 @@ function errHandler(err, source){
         console.log(err,source);
     }
 }
-
-
 
 function authorName(id){
     let author = '';
