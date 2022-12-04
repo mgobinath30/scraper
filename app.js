@@ -55,10 +55,10 @@ app.post('/article', async (req,res) => {
     let partnerID = partnerid(author);
     let sitesHTML = await fetchURLArticle(data.url11,data.url33,data.url22);
     let sportsOptionsObject1 = handleSource1(sitesHTML[0]);
-    let bovadaObject1 = handleSource2(sitesHTML[1]);
+    let bovadaObject1 = handleSource22(sitesHTML[1]);
     let bovadaObject11 = handleSource3(sitesHTML[2]);
     let scrapedObject = handleObjectsArticle(sportsOptionsObject1,bovadaObject1,league,partnerID,data.order,sportsData,bovadaObject11);
-    let writeTemplate =injectHTML(scrapedObject);
+    let writeTemplate = injectArticleHTML(scrapedObject);
     res.send(writeTemplate);
   })
 
@@ -95,6 +95,19 @@ function injectHTML(data){
     // savetoDB(template, data);//invoke savetodb Firebase Function
     // return fileName;
     // res.download('out/aa.html');
+    return template;
+}
+
+//inject scraped data to html
+function injectArticleHTML(data){
+    let templateFile = fs.readFileSync(`${__dirname}/templates/article.html`,'utf8'); //read the template from here
+    let templateMin = eval(templateFile);
+    let template = beautify.html(templateMin,{
+        "indent_size": "4",
+        "indent_char": " ",
+        "max_preserve_newlines": "5",
+        "preserve_newlines": true
+      });
     return template;
 }
 
@@ -205,7 +218,7 @@ function handleObjects(object1,object2,league,partnerID,order,sports){
         visitingTeamWinLose: object2.visitingWinLose,
         citynameFull:object1.citynameFull    
     }
-    console.log(obj);
+    // console.log(obj);
     return obj;
 }
 
@@ -256,7 +269,7 @@ function handleObjectsArticle(object1,object2,league,partnerID,order,sports,arti
         injuries1Table:article.injuries1Table,
         injuries2Table:article.injuries2Table    
     }
-    console.log(obj);
+    // console.log(obj);
     return obj;
 }
 
@@ -288,7 +301,7 @@ function handleSource1(html) {
             first3Para.push(title);
             }
         });
-        first3Para = first3Para.join(',').toString();
+        first3Para = first3Para.join('').toString();
         let splitLocation = location.split(',');
         let cityname = $('.sdi-title-page-who').text().trim().split(' ');
         let CITY_NAME_01 = cityname[0];
@@ -382,16 +395,16 @@ function handleSource3(html) {
     const $ = cheerio.load(html, {normalizeWhitespace: true, decodeEntities: false});
     //initialized cheerio
     try{
-        // $('.injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(2)')[0].remove();
-        // $('.injuries-showhide .sdi-data-wide:nth-child(4) tr:nth-child(2) td:nth-child(2)')[0].remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr:nth-child(2) td:nth-child(2)').remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(2)').remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr th:nth-child(2)').remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr:nth-child(2) td:nth-child(2)').remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr:nth-child(2) td:nth-child(3)').remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(7) tr th:nth-child(3)').remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr:nth-child(2) td:nth-child(3)').remove();
-        $('.injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(3)').remove();
+        $(".injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(even)").remove();
+        $(".injuries-showhide .sdi-data-wide:nth-child(4) tr td:nth-child(even)").remove();
+
+        $(".injuries-showhide .sdi-data-wide:nth-child(7) tr th:nth-child(even)").remove();
+        $(".injuries-showhide .sdi-data-wide:nth-child(7) tr td:nth-child(even)").remove();
+
+        $(".injuries-showhide .sdi-data-wide:nth-child(4) tr td a:nth-child(odd)").removeAttr("href").css("color","black");
+        $(".injuries-showhide .sdi-data-wide:nth-child(7) tr td a:nth-child(odd)").removeAttr("href").css("color","black");
+
+
         let injuries1 = $(".injuries-showhide .sdi-titlerow:nth-child(3)").text();
         let injuries2 = $(".injuries-showhide .sdi-titlerow:nth-child(6)").text();
         let injuries1Table = $(".injuries-showhide .sdi-data-wide:nth-child(4)").html();
@@ -401,6 +414,67 @@ function handleSource3(html) {
             injuries2:injuries2,
             injuries1Table:injuries1Table,
             injuries2Table:injuries2Table
+        };
+        return scrapedObject2;
+    } catch(error){
+        let err_string = `Exact Error: ${error}`;
+        let source = 'Scraping::ContentErr-Bovada> URL Doesn\'t Contain required data or there was a change in the website'
+        errHandler(err_string, source);
+    }
+}
+
+//Scrape Source 2
+function handleSource22(html) {
+    const $ = cheerio.load(html, {normalizeWhitespace: true, decodeEntities: false});
+    //initialized cheerio
+    try{
+        //start teams
+        $(".matchup_last5.base-table.base-table-sortable .field_goal_percentage").remove();
+        $(".matchup_last5.base-table.base-table-sortable .free_throw_percentage").remove();
+        $(".matchup_last5.base-table.base-table-sortable .three_pointers").remove();
+        $(".matchup_last5.base-table.base-table-sortable .location").remove();
+        $(".matchup_last5.base-table.base-table-sortable .event_date").remove();
+
+        teamArr = [];
+        let teams = $('div.team').each(function(idx,elem){teamArr[idx] = $(this).text()}); //get all team related info and store them into array
+        //end teams
+        let visitingArr =  teamArr[0].split('\n');
+        let homeArr = teamArr[1].split('\n');
+
+        //start Tables
+        let recent = $('table.matchup_recentform').html() //get the recent table
+        let last5Arr = [];
+        let last5 = $('.matchup_last5').each(function(i,e){last5Arr[i] = $(this).html()}); //get each last5 matchup and store them into array
+        let trendsArr = [];
+        let trends = $('table.trends').each(function(index,el){trendsArr[index] = $(this).html()}); //get each team's trends and store them into array
+        let trendsHomeTableToFix = trendsArr[0].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
+        let trendsVisitingTableToFix = trendsArr[1].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
+        //end tables
+    
+        //start scraped data
+        let VisitingTeamName = `${visitingArr[3]} ${visitingArr[4]}`.replace(/\s\s/g,''); //sample: Boise State Broncos
+        let VisitingTeamWinLose = visitingArr[5].replace(/\s/g, ''); // sample: 19-11
+        let HomeTeamName = `${homeArr[3]} ${homeArr[4]}`.replace(/\s\s/g,''); //sample: Boise State Broncos
+        let HomeTeamWinLose = homeArr[5].replace(/\s/g, ''); // sample: 19-11
+        let vs = `${VisitingTeamName} (${VisitingTeamWinLose}) vs ${HomeTeamName} (${HomeTeamWinLose})`;
+        let recentFormTable = recent.replace(/ class=".*(?<=")/g, '').replace(/\s\s/g,''); // remove classes and whitespaces
+        let last5HomeTable = last5Arr[0].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
+        let last5VisitingTable = last5Arr[1].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
+        let trendsVisitingTable = trendsVisitingTableToFix.replace(/<th>.*(?<=<\/th>)/g,`<th colspan="3"> <strong>${VisitingTeamName}</strong></th>`); //add strong tag in team name
+        let trendsHomeTable = trendsHomeTableToFix.replace(/<th>.*(?<=<\/th>)/g,`<th colspan="3"> <strong>${HomeTeamName}</strong></th>`);//add strong tag in team name
+        // end scraped data
+        // build and send back object to handleObjects function
+        let scrapedObject2 = {
+            visitingTeam: VisitingTeamName,
+            visitingWinLose: VisitingTeamWinLose,
+            homeTeam: HomeTeamName,
+            homeWinLose: HomeTeamWinLose,
+            vs: vs,
+            recentFormTable: recentFormTable,
+            last5VisitingTable: last5VisitingTable,
+            last5HomeTable: last5HomeTable,
+            trendsVisiting: trendsVisitingTable,
+            trendsHome: trendsHomeTable
         };
         return scrapedObject2;
     } catch(error){
