@@ -306,7 +306,7 @@ function handleSource1(html) {
         let cityname = $('.sdi-title-page-who').text().trim().split(' ');
         let CITY_NAME_01 = cityname[0];
         let CITY_NAME_02 = cityname[2];
-        let TODAY_HERE = whenArr[1];
+        let TODAY_HERE = whenArr[1].replace('&nbsp;','');
         let STADIUM_HERE = splitLocation[0];
         let STATE  = splitLocation[1];
         let CITY = splitLocation[2];
