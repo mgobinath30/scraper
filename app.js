@@ -288,8 +288,8 @@ function handleSource1(html) {
         let whenArr = quickhitsArr[1].match(/(?<=When:\s?<\/strong>).+?(?=<br>?)/gi,'').toString().split(',');
         //End Scraping
         //Begin Scraped Data
-        let time = whenArr[0];
-        let date = `${whenArr[1]},${whenArr[2]},${whenArr[3]}`;
+        let time = whenArr[0].replace('&nbsp;',' ');
+        let date = `${whenArr[1].replace('&nbsp;','')},${whenArr[2].replace('&nbsp;','')},${whenArr[3].replace('&nbsp;','')}`;
         let FirstPara = brArr[0].toString(); //get the first paragraph from the p array
         // let tv = content.match(/(?<=TV:\s?<\/strong>).+?(?=<br>?)/gi).toString(); //Filter TV Channels from all the contents
         let location = quickhitsArr[2].match(/(?<=Where:\s?<\/strong>).+?(?=<br>?)/gi,'').toString(); //Gets the exact location without the html tags
@@ -407,8 +407,8 @@ function handleSource3(html) {
 
         let injuries1 = $(".injuries-showhide .sdi-titlerow:nth-child(3)").text();
         let injuries2 = $(".injuries-showhide .sdi-titlerow:nth-child(6)").text();
-        let injuries1Table = $(".injuries-showhide .sdi-data-wide:nth-child(4)").html();
-        let injuries2Table = $(".injuries-showhide .sdi-data-wide:nth-child(7)").html();
+        let injuries1Table = $(".injuries-showhide .sdi-data-wide:nth-child(4)").html().replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, '');
+        let injuries2Table = $(".injuries-showhide .sdi-data-wide:nth-child(7)").html().replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, '');
         let scrapedObject2 = {
             injuries1:injuries1,
             injuries2:injuries2,
