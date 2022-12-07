@@ -50,7 +50,7 @@ app.post('/article', async (req,res) => {
     const data = req.body;
     let author = authorName(1);
     // let sports = sportsName(data.sports);
-    let sportsData = sportsName(data.sports);
+    let sportsData = sportsName(data.sportsA);
     let league = leagueName(data.url11);
     let partnerID = partnerid(author);
     let sitesHTML = await fetchURLArticle(data.url11,data.url33,data.url22);
@@ -100,7 +100,7 @@ function injectHTML(data){
 
 //inject scraped data to html
 function injectArticleHTML(data){
-    let templateFile = fs.readFileSync(`${__dirname}/templates/article.html`,'utf8'); //read the template from here
+    let templateFile = fs.readFileSync(`${__dirname}/templates/articles/${data.mainSports}.html`,'utf8'); //read the template from here
     let templateMin = eval(templateFile);
     let template = beautify.html(templateMin,{
         "indent_size": "4",
