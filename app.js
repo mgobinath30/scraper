@@ -435,6 +435,23 @@ function handleSource22(html) {
         $(".matchup_last5.base-table.base-table-sortable .location").remove();
         $(".matchup_last5.base-table.base-table-sortable .event_date").remove();
 
+        $(".matchup_last5.base-table.base-table-sortable .penalty_kill").remove();
+        $(".matchup_last5.base-table.base-table-sortable .power_play").remove();
+        $(".matchup_last5.base-table.base-table-sortable .opposing_goalie").remove();
+
+        $(".matchup_last5.base-table.base-table-sortable .offensive_rush_yards").remove();
+        $(".matchup_last5.base-table.base-table-sortable .offensive_passing_yards").remove();
+        $(".matchup_last5.base-table.base-table-sortable .offensive_total_yards").remove();        
+        $(".matchup_last5.base-table.base-table-sortable .defensive_rush_yards").remove();
+        $(".matchup_last5.base-table.base-table-sortable .defensive_passing_yards").remove();
+        $(".matchup_last5.base-table.base-table-sortable .defensive_total_yards").remove();
+        $(".matchup_last5.base-table.base-table-sortable .turnovers").remove();
+        $(".matchup_last5.base-table.base-table-sortable .location").remove();
+
+        $(".matchup_recentform.base-table.base-table-sortable .money").remove();
+        $(".matchup_recentform.base-table.base-table-sortable .offense").remove();
+        $(".matchup_recentform.base-table.base-table-sortable .defense").remove();
+
         teamArr = [];
         let teams = $('div.team').each(function(idx,elem){teamArr[idx] = $(this).text()}); //get all team related info and store them into array
         //end teams
