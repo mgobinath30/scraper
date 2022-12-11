@@ -55,7 +55,7 @@ app.post('/article', async (req,res) => {
     let partnerID = partnerid(author);
     let sitesHTML = await fetchURLArticle(data.url11,data.url33,data.url22);
     let sportsOptionsObject1 = handleSource1(sitesHTML[0]);
-    let bovadaObject1 = handleSource22(sitesHTML[1]);
+    let bovadaObject1 = handleSource22(sitesHTML[1],sportsData);
     let bovadaObject11 = handleSource3(sitesHTML[2]);
     let scrapedObject = handleObjectsArticle(sportsOptionsObject1,bovadaObject1,league,partnerID,data.order,sportsData,bovadaObject11);
     let writeTemplate = injectArticleHTML(scrapedObject);
@@ -424,7 +424,7 @@ function handleSource3(html) {
 }
 
 //Scrape Source 2
-function handleSource22(html) {
+function handleSource22(html,sports) {
     const $ = cheerio.load(html, {normalizeWhitespace: true, decodeEntities: false});
     //initialized cheerio
     try{
@@ -449,8 +449,14 @@ function handleSource22(html) {
         $(".matchup_last5.base-table.base-table-sortable .location").remove();
 
         $(".matchup_recentform.base-table.base-table-sortable .money").remove();
-        $(".matchup_recentform.base-table.base-table-sortable .offense").remove();
-        $(".matchup_recentform.base-table.base-table-sortable .defense").remove();
+        let mainSports = sports.split(' ')[0];
+        if(mainSports === 'NCAA') {
+            mainSports = sports.split(' ')[1] === 'Basketball' ? 'NCAAB' : 'NCAAF';
+        }
+        if (mainSports == 'NHL') {
+          $(".matchup_recentform.base-table.base-table-sortable .offense").remove();
+          $(".matchup_recentform.base-table.base-table-sortable .defense").remove();    
+        }
 
         teamArr = [];
         let teams = $('div.team').each(function(idx,elem){teamArr[idx] = $(this).text()}); //get all team related info and store them into array
