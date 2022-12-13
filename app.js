@@ -454,6 +454,8 @@ function handleSource22(html,sports) {
             mainSports = sports.split(' ')[1] === 'Basketball' ? 'NCAAB' : 'NCAAF';
         }
         if (mainSports == 'NHL') {
+          $(".matchup_recentform tbody tr td:nth-child(3)").remove();
+          $(".matchup_recentform.base-table.base-table-sortable .offense").remove();
           $(".matchup_recentform.base-table.base-table-sortable .offense").remove();
           $(".matchup_recentform.base-table.base-table-sortable .defense").remove();    
         }
