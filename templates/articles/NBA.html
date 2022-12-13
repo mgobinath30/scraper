@@ -1,4 +1,14 @@
 `
+<style>
+  thead tr {
+    text-align: left;
+}
+
+table tbody tr:first-child {
+    font-weight: 700;
+    text-align: left;
+}
+</style>
 <p><strong>BV Link</strong><br />
 /go/bovada/2003
 <br /><strong>For Title </strong><br />
@@ -44,6 +54,9 @@ ${data.homeTeam} &nbsp;&nbsp;<a href="/go/bovada/2003">-7.5 (-110)</a></p>
   Over &nbsp;&nbsp;<a href="/go/bovada/2003">227.0 (-110)</a><br />
   Under &nbsp;&nbsp;<a href="/go/bovada/2003">227.0 (-110)</a></p>
 <h4>Team Record &amp; Betting Stats</h4>
+<table>
+  ${data.recentForm}
+</table>
 <table>
   ${data.recentForm}
 </table>
