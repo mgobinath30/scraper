@@ -1,4 +1,14 @@
 `
+<style>
+  thead tr {
+    text-align: left;
+}
+
+table tbody tr:first-child {
+    font-weight: 700;
+    text-align: left;
+}
+</style>
 <p><strong>BV Link</strong><br />
   /go/bovada/2005
 <br /><strong>For Title </strong><br />
@@ -47,7 +57,9 @@ ${data.homeTeam} &nbsp;&nbsp;<a href="/go/bovada/2003">-7.5 (-110)</a></p>
 <table>
   ${data.recentForm}
 </table>
-
+<table>
+  ${data.recentForm}
+</table>
 <h4>${data.visitingTeam} Last 5 Games</h4>
 <table>
 ${data.last5HomeTable}
