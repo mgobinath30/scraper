@@ -577,6 +577,7 @@ function sportsName(id){
         case '3': dsports = 'NFL Football';break;
         case '4': dsports = 'NCAA Football';break;
         case '5': dsports = 'NHL Hockey';break;
+        case '6': dsports = 'AI Sports';break;
         default: dsports = '';
     }
     return dsports;
