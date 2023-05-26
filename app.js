@@ -363,7 +363,7 @@ function handleSource2(html) {
         let HomeTeamName = `${homeArr[3]} ${homeArr[4]}`.replace(/\s\s/g,''); //sample: Boise State Broncos
         let HomeTeamWinLose = homeArr[5].replace(/\s/g, ''); // sample: 19-11
         let vs = `${VisitingTeamName} (${VisitingTeamWinLose}) vs ${HomeTeamName} (${HomeTeamWinLose})`;
-        let recentFormTable = recent.replace(/ class=".*(?<=")/g, '').replace(/\s\s/g,''); // remove classes and whitespaces
+        let recentFormTable = recent !== null ? recent.replace(/ class=".*(?<=")/g, '').replace(/\s\s/g,'') : ''; // remove classes and whitespaces
         let last5HomeTable = last5Arr[0].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
         let last5VisitingTable = last5Arr[1].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
         let trendsVisitingTable = trendsVisitingTableToFix.replace(/<th>.*(?<=<\/th>)/g,`<th colspan="3"> <strong>${VisitingTeamName}</strong></th>`); //add strong tag in team name
@@ -385,7 +385,7 @@ function handleSource2(html) {
         return scrapedObject2;
     } catch(error){
         let err_string = `Exact Error: ${error}`;
-        let source = 'Scraping::ContentErr-Bovada> URL Doesn\'t Contain required data or there was a change in the website'
+        let source = 'Scraping Source 2::ContentErr-Bovada> URL Doesn\'t Contain required data or there was a change in the website'
         errHandler(err_string, source);
     }
 }
@@ -578,6 +578,7 @@ function sportsName(id){
         case '4': dsports = 'NCAA Football';break;
         case '5': dsports = 'NHL Hockey';break;
         case '6': dsports = 'AI Sports';break;
+        case '7': dsports = 'MLB Baseball';break;
         default: dsports = '';
     }
     return dsports;
