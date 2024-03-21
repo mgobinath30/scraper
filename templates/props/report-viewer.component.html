@@ -1,0 +1,73 @@
+<!-- <div class="content-heading">
+  <div>Heavy Duty Reporting
+      <small>View Medium/Heavy Duty Data from EPA Staging Tables.</small></div>
+</div> -->
+<div class="col-md-12">
+
+  <div class="row">
+      <div class="col-xl-12">
+          <div class="card card-default">
+              <!-- <div class="card-header">
+                  <h3 class="card-title">View HD Reporting</h3>
+                  <p>
+                      Report Server: {{reportServer}}</p>
+              </div> -->
+              <div class="card-body">
+                <div class="row">
+                        <button type="button" class="btn btn-primary reportBtn mainbtn">Heavy Duty Reporting</button>
+                        <!-- <h3 class="card-title" style="padding-left:20px">HD Credits Available Report</h3> -->
+                </div>
+                  <div class="row">
+                      <div class="col">
+                          <button type="button" class="btn btn-primary reportBtn" (click)="isHDABTCollapsed = !isHDABTCollapsed">
+                HD ABT Reports
+            </button>
+                          <div class="py-2" id="collapseBasic1" [collapse]="isHDABTCollapsed" [isAnimated]="true">
+                              <div class="btn-group d-block" style="width:fit-content" *ngFor="let report of getReports('HDABT')">
+                                  <label class="btn btn-primary reportBtn" [(ngModel)]="selectedReport" [btnRadio]="report.ReportName" (click)="setupReportParameters(report)">{{report.ReportName}}</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col">
+                          <button type="button" class="btn btn-primary reportBtn" (click)="isPDVCollapsed = !isPDVCollapsed">
+                      Production Volume
+                    </button>
+                          <div class="py-2" id="collapseBasic2" [collapse]="isPDVCollapsed" [isAnimated]="true">
+                              <div class="btn-group d-block" style="width:fit-content" *ngFor="let report of getReports('PVR')">
+                                  <label class="d-block btn btn-primary reportBtn" [(ngModel)]="selectedReport" [btnRadio]="report.ReportName" (click)="setupReportParameters(report)">{{report.ReportName}}</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col">
+                          <label class="btn btn-primary reportBtn" [(ngModel)]="selectedReport" (click)="setupReportParameters(getReports('HDSUMMARY')[0])">HD Summary Matrix</label>
+                      </div>
+                      <div class="col">
+                          <button type="button" class="btn btn-primary reportBtn" (click)="isCertificationCollapsed = !isCertificationCollapsed">
+                          Certification
+                      </button>
+                          <div class="py-2" id="collapseBasic1" [collapse]="isCertificationCollapsed" [isAnimated]="true">
+                              <div class="btn-group d-block" style="width:fit-content" *ngFor="let report of getReports('Certification')">
+                                  <label class="btn btn-primary reportBtn" [(ngModel)]="selectedReport" [btnRadio]="report.ReportName" (click)="setupReportParameters(report)">{{report.ReportName}}</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col">
+                        <label class="btn btn-primary reportBtn" [(ngModel)]="selectedReport" (click)="setupReportParameters(getReports('HDAR')[0])">HD Credits Available Report</label>        
+                    </div>
+
+                    </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+  <div class="container" *ngIf="reportUrl">
+      <ssrs-reportviewer [reportserver]="reportServer" [reporturl]="reportUrl" [showparameters]="showParameters" [language]="language" [width]="width" [height]="height" [toolbar]="toolbar">
+      </ssrs-reportviewer>
+  </div>
+
+</div>
+
+<!--
+                  [parameters]="parameters"-->
