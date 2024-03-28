@@ -253,17 +253,17 @@ function handleObjectsArticle(object1,object2,league,partnerID,order,sports,arti
         first3Para: object1.first3Para,
         TV: object1.TVchannels,
         firstParaGraph: object1.firstParaGraph,
-        recentForm: object2.recentFormTable,
-        visitingTeam: object2.visitingTeam,
-        homeTeam: object2.homeTeam,
-        last5VisitingTable: object2.last5VisitingTable,
-        last5HomeTable: object2.last5HomeTable,
-        trendsVisiting: object2.trendsVisiting,
-        trendsHome: object2.trendsHome,
-        vs: object2.vs,
-        homeTeamWinLose: object2.homeWinLose,
-        visitingTeamWinLose: object2.visitingWinLose,
-        citynameFull:object1.citynameFull,
+        recentForm: object2?.recentFormTable,
+        visitingTeam: object2?.visitingTeam,
+        homeTeam: object2?.homeTeam,
+        last5VisitingTable: object2?.last5VisitingTable,
+        last5HomeTable: object2?.last5HomeTable,
+        trendsVisiting: object2?.trendsVisiting,
+        trendsHome: object2?.trendsHome,
+        vs: object2?.vs,
+        homeTeamWinLose: object2?.homeWinLose,
+        visitingTeamWinLose: object2?.visitingWinLose,
+        citynameFull:article.citynameFull,
         injuries1:article.injuries1,
         injuries2:article.injuries2,
         injuries1Table:article.injuries1Table,
@@ -395,6 +395,7 @@ function handleSource3(html) {
     const $ = cheerio.load(html, {normalizeWhitespace: true, decodeEntities: false});
     //initialized cheerio
     try{
+        let citynameFull = $('.sdi-title-page-who').text().trim();
         $(".injuries-showhide .sdi-data-wide:nth-child(4) tr th:nth-child(even)").remove();
         $(".injuries-showhide .sdi-data-wide:nth-child(4) tr td:nth-child(even)").remove();
 
@@ -410,6 +411,7 @@ function handleSource3(html) {
         let injuries1Table = $(".injuries-showhide .sdi-data-wide:nth-child(4)").html().replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, '');
         let injuries2Table = $(".injuries-showhide .sdi-data-wide:nth-child(7)").html().replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, '');
         let scrapedObject2 = {
+            citynameFull: citynameFull,
             injuries1:injuries1,
             injuries2:injuries2,
             injuries1Table:injuries1Table,
@@ -468,6 +470,9 @@ function handleSource22(html,sports) {
 
         //start Tables
         let recent = $('table.matchup_recentform').html() //get the recent table
+        if(recent === null) {
+            recent = $('table.recent_form').html()
+        }
         let last5Arr = [];
         let last5 = $('.matchup_last5').each(function(i,e){last5Arr[i] = $(this).html()}); //get each last5 matchup and store them into array
         let trendsArr = [];
@@ -482,7 +487,7 @@ function handleSource22(html,sports) {
         let HomeTeamName = `${homeArr[3]} ${homeArr[4]}`.replace(/\s\s/g,''); //sample: Boise State Broncos
         let HomeTeamWinLose = homeArr[5].replace(/\s/g, ''); // sample: 19-11
         let vs = `${VisitingTeamName} (${VisitingTeamWinLose}) vs ${HomeTeamName} (${HomeTeamWinLose})`;
-        let recentFormTable = recent.replace(/ class=".*(?<=")/g, '').replace(/\s\s/g,''); // remove classes and whitespaces
+        let recentFormTable = recent?.replace(/ class=".*(?<=")/g, '').replace(/\s\s/g,''); // remove classes and whitespaces
         let last5HomeTable = last5Arr[0].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
         let last5VisitingTable = last5Arr[1].replace(/ class=".*(?<=")/g, '').replace(/\s\s/g, ''); //remove classes and whitespaces
         let trendsVisitingTable = trendsVisitingTableToFix.replace(/<th>.*(?<=<\/th>)/g,`<th colspan="3"> <strong>${VisitingTeamName}</strong></th>`); //add strong tag in team name
